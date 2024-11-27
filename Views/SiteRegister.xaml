@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PM2E2GRUPO2.Views.SiteRegister"
+             Title="Registrar Sitio">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15" BackgroundColor="#f9f9f9">
+
+            <Frame CornerRadius="10" Padding="10" Margin="0,10" HasShadow="True" BackgroundColor="White">
+                <VerticalStackLayout Spacing="10">
+                    <toolkit:MediaElement x:Name="mediaElement"
+                                          HeightRequest="200"
+                                          WidthRequest="300"
+                                          ShouldShowPlaybackControls="True"
+                                          ShouldAutoPlay="False"
+                                          Aspect="AspectFit" />
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Button Text="🎥 Grabar Video"
+                                Clicked="OnRecordVideoClicked"
+                                BackgroundColor="#007aff"
+                                TextColor="White"
+                                CornerRadius="10" />
+                        <Button Text="▶ Reproducir"
+                                Clicked="OnPlayVideoClicked"
+                                BackgroundColor="#34c759"
+                                TextColor="White"
+                                CornerRadius="10" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="10" Padding="10" Margin="0,10" HasShadow="True" BackgroundColor="White">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Latitud:" FontAttributes="Bold" />
+                    <Entry x:Name="txtLatitud" IsReadOnly="True" BackgroundColor="#eeeeee" />
+
+                    <Label Text="Longitud:" FontAttributes="Bold" />
+                    <Entry x:Name="txtLongitud" IsReadOnly="True" BackgroundColor="#eeeeee" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="10" Padding="10" Margin="0,10" HasShadow="True" BackgroundColor="White">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Descripción:" FontAttributes="Bold" />
+                    <Editor x:Name="txtDescripcion" Placeholder="Describe la ubicación..."
+                            HeightRequest="100"
+                            BackgroundColor="#eeeeee" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="10" Padding="10" Margin="0,10" HasShadow="True" BackgroundColor="White">
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Button Text="🎤 Grabar Audio"
+                                Clicked="OnRecordAudioClicked"
+                                BackgroundColor="#007aff"
+                                TextColor="White"
+                                CornerRadius="10" />
+                        <Button Text="▶ Reproducir"
+                                Clicked="OnPlayAudioClicked"
+                                BackgroundColor="#34c759"
+                                TextColor="White"
+                                CornerRadius="10" />
+                    </HorizontalStackLayout>
+
+                    <toolkit:MediaElement x:Name="audioMediaElement"
+                                          HeightRequest="50"
+                                          WidthRequest="300"
+                                          ShouldShowPlaybackControls="True"
+                                          ShouldAutoPlay="False"
+                                          Aspect="AspectFit" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="💾 Guardar Información"
+                    Clicked="OnSave"
+                    BackgroundColor="#ff9500"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Margin="0,20"
+                    HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
