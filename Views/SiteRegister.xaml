@@ -78,8 +78,17 @@
                     BackgroundColor="#ff9500"
                     TextColor="White"
                     CornerRadius="10"
-                    Margin="0,20"
+                    Margin="0,20,0,10"
                     HorizontalOptions="Center" />
+
+            <Button Text="📋  Ver Lista"
+                    Clicked="OnShowList"
+                    BackgroundColor="#34c759"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Margin="0,1"
+                    
+        HorizontalOptions="Center" />
 
         </VerticalStackLayout>
     </ScrollView>

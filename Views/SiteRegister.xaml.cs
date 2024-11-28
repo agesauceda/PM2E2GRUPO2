@@ -224,4 +224,8 @@ public partial class SiteRegister : ContentPage
         }
     }
 
+    private async void OnShowList(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new SiteList());
+    }
 }

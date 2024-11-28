@@ -14,7 +14,7 @@ namespace PM2E2GRUPO2
     {
         private readonly HttpClient _httpClient;
         private const string MainUrl = "http://34.55.138.115:15000/sites/";
-
+        
         public Service() 
         {
             _httpClient = new HttpClient();
@@ -23,6 +23,15 @@ namespace PM2E2GRUPO2
         public async Task<List<Sitio>> GetAllSitiosAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<Sitio>>(MainUrl);
+        }
+
+        public async Task<bool> DeleteSitioAsync(Sitio sitio)
+        {
+         
+            var url = $"{MainUrl}{sitio.Id}";
+            Console.WriteLine("URL generada: " + url);
+            var response = await _httpClient.DeleteAsync(url);
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> CreateSitioAsync(Sitio sitio)
