@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Hosting;
 using Plugin.Maui.Audio;
 
 
@@ -13,6 +14,7 @@ namespace PM2E2GRUPO2
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkitMediaElement()
+                .UseMauiMaps()
 
                 .ConfigureFonts(fonts =>
                 {

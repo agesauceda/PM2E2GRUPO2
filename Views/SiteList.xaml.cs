@@ -36,6 +36,7 @@ public partial class SiteList : ContentPage
     {
         var button = (Button)sender;
         var site = (Sitio)button.BindingContext;
+        await Navigation.PushAsync(new MapPage(site));
 
     }
     private async void OnEliminarClicked(Object sender, EventArgs e)
