@@ -80,10 +80,7 @@ public partial class SiteList : ContentPage
             await DisplayAlert("Error", "Debe seleccionar un elemento", "OK");
             return;
         }
-
-        await DisplayAlert("Información del Sitio",
-                          $"Descripción: {sitioSeleccionado.Descripcion}",
-                          "OK");
+        await Navigation.PushAsync(new SiteUpdate(sitioSeleccionado.Id, sitioSeleccionado.Descripcion));
     }
 
 }

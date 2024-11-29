@@ -1,14 +1,15 @@
 using Plugin.Maui.Audio;
 using PM2E2GRUPO2.Models;
-#if ANDROID
-using Android.Media; 
-#endif
 
+#if ANDROID
+using Android.Media;
+#endif
 
 namespace PM2E2GRUPO2.Views;
 
-public partial class SiteRegister : ContentPage
+public partial class SiteUpdate : ContentPage
 {
+	private Sitio site = new Sitio();
     private string _audioFilePath;
 #if ANDROID
     private MediaRecorder _recorder;
@@ -17,34 +18,40 @@ public partial class SiteRegister : ContentPage
     private bool _isRecording;
     private Byte[] VideoBase;
     private Byte[] AudioBase;
-    public SiteRegister()
+    private Service client = new Service();
+    private Utils tools = new Utils();
+    public SiteUpdate(int id, string des)
 	{
 		InitializeComponent();
+		site.Id = id;
+		site.Descripcion = des;
 	}
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-        await GetLocation();
-    }
-    private async Task GetLocation()
-    {
-        try
-        {
-            var location = await Geolocation.Default.GetLocationAsync();
-            if (location != null)
-            {
-                txtLatitud.Text = location.Latitude.ToString();
-                txtLongitud.Text = location.Longitude.ToString();
-            }
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Error", "No se pudo obtener la ubicación.", "OK");
-        }
-    }
 
-    private async void OnRecordVideoClicked(object sender, EventArgs e)
-    {
+	protected override async void OnAppearing() 
+	{
+		base.OnAppearing();
+		txtDescripcionUpt.Text = site.Descripcion;
+		await GetLocation();
+        await DownloadAudio(site.Id);
+        await DownloadVideo(site.Id);
+	}
+
+	private async Task GetLocation()
+	{
+		try
+		{
+			var location = await Geolocation.GetLocationAsync();
+			if (location != null) {
+				txtLatitudUpt.Text = location.Latitude.ToString();
+				txtLongitudUpt.Text = location.Longitude.ToString();
+			}
+		}
+		catch (Exception ex) {
+			await DisplayAlert("Error", "No se pudo obtener la ubicación", "OK");
+		}
+	}
+
+	private async void OnRecordUpdateVideoClicked(object sender, EventArgs e) {
         try
         {
             if (MediaPicker.Default.IsCaptureSupported)
@@ -76,29 +83,28 @@ public partial class SiteRegister : ContentPage
         }
     }
 
-    private void OnPlayVideoClicked(object sender, EventArgs e)
-    {
+	private async void OnPlayVideoUpdateClicked(object sender, EventArgs e) {
         try
         {
             var videoPath = Preferences.Get("LastRecordedVideoPath", string.Empty);
 
             if (!string.IsNullOrEmpty(videoPath))
             {
-                mediaElement.Source = videoPath;
-                mediaElement.Play();
+                mediaElementUpt.Source = videoPath;
+                mediaElementUpt.Play();
             }
             else
             {
-                DisplayAlert("Error", "No hay ningún video grabado.", "OK");
+                await DisplayAlert("Error", "No hay ningún video grabado.", "OK");
             }
         }
         catch (Exception ex)
         {
-            DisplayAlert("Error", $"No se pudo reproducir el video: {ex.Message}", "OK");
+            await DisplayAlert("Error", $"No se pudo reproducir el video: {ex.Message}", "OK");
         }
     }
-    private async void OnRecordAudioClicked(object sender, EventArgs e)
-    {
+
+	private async void OnRecordAudioUpdateClicked(object sender, EventArgs e) {
 #if ANDROID
         var status = await Permissions.CheckStatusAsync<Permissions.Microphone>();
         if (status != PermissionStatus.Granted)
@@ -120,18 +126,15 @@ public partial class SiteRegister : ContentPage
 
             _isRecording = false;
 
-            using (var ms = new MemoryStream()) 
-            { 
-                using (var fileStream = File.OpenRead(_audioFilePath)) 
-                { 
-                    await fileStream.CopyToAsync(ms); 
-                } 
-                    AudioBase = ms.ToArray();
-                for (int i = 0; i < 10; i++) {
-                    Console.WriteLine(AudioBase[i]);
+            using (var ms = new MemoryStream())
+            {
+                using (var fileStream = File.OpenRead(_audioFilePath))
+                {
+                    await fileStream.CopyToAsync(ms);
                 }
-                }
-           Console.WriteLine($"AudioBase capturado: {Convert.ToBase64String(AudioBase).Substring(0, 100)}... (Tamaño: {AudioBase.Length} bytes)");
+                AudioBase = ms.ToArray();
+            }
+            Console.WriteLine($"AudioBase capturado: {Convert.ToBase64String(AudioBase).Substring(0, 100)}... (Tamaño: {AudioBase.Length} bytes)");
 
             await DisplayAlert("Grabación", "Audio grabado correctamente.", "OK");
         }
@@ -156,8 +159,7 @@ public partial class SiteRegister : ContentPage
 #endif
     }
 
-    private async void OnPlayAudioClicked(object sender, EventArgs e)
-    {
+    private async void OnPlayAudioUpdateClicked(object sender, EventArgs e) {
         if (string.IsNullOrEmpty(_audioFilePath))
         {
             await DisplayAlert("Error", "No hay audio grabado.", "OK");
@@ -166,8 +168,8 @@ public partial class SiteRegister : ContentPage
 
         try
         {
-            audioMediaElement.Source = _audioFilePath;
-            audioMediaElement.Play();
+            audioMediaElementUpt.Source = _audioFilePath;
+            audioMediaElementUpt.Play();
         }
         catch (Exception ex)
         {
@@ -175,11 +177,10 @@ public partial class SiteRegister : ContentPage
         }
     }
 
-    private async void OnSave(object sender, EventArgs e)
-    {
-        if (string.IsNullOrEmpty(txtDescripcion.Text) ||
-            string.IsNullOrEmpty(txtLatitud.Text) ||
-            string.IsNullOrEmpty(txtLongitud.Text))
+	private async void OnUpdateClicked(object sender, EventArgs e) {
+        if (string.IsNullOrEmpty(txtDescripcionUpt.Text) ||
+    string.IsNullOrEmpty(txtLatitudUpt.Text) ||
+    string.IsNullOrEmpty(txtLongitudUpt.Text))
         {
             await DisplayAlert("Error", "Todos los campos son obligatorios.", "OK");
             return;
@@ -201,15 +202,16 @@ public partial class SiteRegister : ContentPage
         {
             var sitio = new Sitio
             {
-                Descripcion = txtDescripcion.Text,
-                Latitud = double.Parse(txtLatitud.Text),
-                Longitud = double.Parse(txtLongitud.Text),
+                Descripcion = txtDescripcionUpt.Text,
+                Latitud = double.Parse(txtLatitudUpt.Text),
+                Longitud = double.Parse(txtLongitudUpt.Text),
                 Video = VideoBase,
-                Audio = AudioBase
+                Audio = AudioBase,
+                Id = site.Id
             };
 
             var sitioService = new Service();
-            var isSuccess = await sitioService.CreateSitioAsync(sitio);
+            var isSuccess = await sitioService.UpdateSitioAsync(sitio);
 
             if (isSuccess)
             {
@@ -227,8 +229,24 @@ public partial class SiteRegister : ContentPage
         }
     }
 
-    private async void OnShowList(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new SiteList());
+    private async Task DownloadAudio(int id) {
+        AudioBase = await client.getAudio(id);
+        if (AudioBase != null) {
+            for (int i = 0; i < 10; i++) {
+                Console.WriteLine(AudioBase[i]);
+            }
+            string filePath = await tools.SaveAudioAsync(AudioBase);
+            Console.WriteLine(AudioBase.Length);
+            Console.WriteLine(filePath);
+        }
+    }
+
+    private async Task DownloadVideo(int id) {
+        VideoBase = await client.getVideo(id);
+        if (VideoBase != null) {
+            string filePath = await tools.SaveVideoAsync(VideoBase);
+            Console.WriteLine(VideoBase.Length);
+            Console.WriteLine(filePath);
+        }
     }
 }
