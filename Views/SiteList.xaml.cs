@@ -24,6 +24,7 @@ public partial class SiteList : ContentPage
     {
         var button = (Button)sender;
         var site = (Sitio)button.BindingContext;
+        await Navigation.PushAsync(new SiteVideo(site.Id));
 
     }
     private async void OnPlayAudioClicked(Object sender, EventArgs e)

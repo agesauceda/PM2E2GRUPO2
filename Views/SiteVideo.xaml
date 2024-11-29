@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PM2E2GRUPO2.Views.SiteVideo"
              Title="SiteVideo">
-    <VerticalStackLayout>
-        <Label x:Name="videotitulo" 
-               TextColor="White" 
-               FontSize="24" 
-               HorizontalOptions="Center" 
-               VerticalOptions="Start" 
-               Margin="10, 40, 10, 10" />
-
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10" Background="#f9f9f9">
+            <Frame CornerRadius="10" Padding="10" Margin="0,10" HasShadow="True" BackgroundColor="White">
+                <VerticalStackLayout Spacing="10">
+                    <toolkit:MediaElement 
+                        x:Name="videoPlayer"
+                        HeightRequest="200"
+                        WidthRequest="300"
+                        ShouldShowPlaybackControls="True"
+                        ShouldAutoPlay="False"
+                        Aspect="AspectFit"/>
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Button Text="⏯️ Reproducir"
+                            Clicked="OnPlayVideoChargeClicked"
+                            BackgroundColor="#ff9500"
+                            TextColor="White"
+                            CornerRadius="10" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>                                
+            </Frame>            
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
