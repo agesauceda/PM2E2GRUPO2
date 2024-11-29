@@ -43,6 +43,7 @@ public partial class SiteList : ContentPage
     {
         var button = (Button)sender;
         var site = (Sitio)button.BindingContext;
+        await Navigation.PushAsync(new SiteVideo(site.Id));
 
         var popup = new PopupVideo(site);
 
@@ -66,6 +67,7 @@ public partial class SiteList : ContentPage
     {
         var button = (Button)sender;
         var site = (Sitio)button.BindingContext;
+        await Navigation.PushAsync(new MapPage(site));
 
     }
     private async void OnEliminarClicked(Object sender, EventArgs e)
@@ -110,10 +112,7 @@ public partial class SiteList : ContentPage
             await DisplayAlert("Error", "Debe seleccionar un elemento", "OK");
             return;
         }
-
-        await DisplayAlert("Información del Sitio",
-                          $"Descripción: {sitioSeleccionado.Descripcion}",
-                          "OK");
+        await Navigation.PushAsync(new SiteUpdate(sitioSeleccionado.Id, sitioSeleccionado.Descripcion));
     }
 
 }
