@@ -17,6 +17,7 @@ public partial class SiteUpdate : ContentPage
 
     private bool _isRecording;
     private Byte[] VideoBase;
+    private string VideoPath;
     private Byte[] AudioBase;
     private Service client = new Service();
     private Utils tools = new Utils();
@@ -86,11 +87,13 @@ public partial class SiteUpdate : ContentPage
 	private async void OnPlayVideoUpdateClicked(object sender, EventArgs e) {
         try
         {
-            var videoPath = Preferences.Get("LastRecordedVideoPath", string.Empty);
+            if (string.IsNullOrEmpty(VideoPath)) {
+                VideoPath = Preferences.Get("LastRecordedVideoPath", string.Empty);
+            }
 
-            if (!string.IsNullOrEmpty(videoPath))
+            if (!string.IsNullOrEmpty(VideoPath))
             {
-                mediaElementUpt.Source = videoPath;
+                mediaElementUpt.Source = VideoPath;
                 mediaElementUpt.Play();
             }
             else
@@ -235,18 +238,18 @@ public partial class SiteUpdate : ContentPage
             for (int i = 0; i < 10; i++) {
                 Console.WriteLine(AudioBase[i]);
             }
-            string filePath = await tools.SaveAudioAsync(AudioBase);
+            _audioFilePath = await tools.SaveAudioAsync(AudioBase);
             Console.WriteLine(AudioBase.Length);
-            Console.WriteLine(filePath);
+            Console.WriteLine(_audioFilePath);
         }
     }
 
     private async Task DownloadVideo(int id) {
         VideoBase = await client.getVideo(id);
         if (VideoBase != null) {
-            string filePath = await tools.SaveVideoAsync(VideoBase);
+            VideoPath = await tools.SaveVideoAsync(VideoBase);
             Console.WriteLine(VideoBase.Length);
-            Console.WriteLine(filePath);
+            Console.WriteLine(VideoPath);
         }
     }
 }
