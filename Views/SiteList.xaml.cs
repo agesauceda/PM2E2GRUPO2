@@ -1,3 +1,5 @@
+using CommunityToolkit.Maui.Views;
+using Plugin.Maui.Audio;
 using PM2E2GRUPO2.Models;
 
 namespace PM2E2GRUPO2.Views;
@@ -6,6 +8,7 @@ public partial class SiteList : ContentPage
 {
     private Service client = new Service();
     private List<Sitio> list = new List<Sitio>();
+    private List<Sitio> sitiosFiltrados = new List<Sitio>();
     private Sitio sitioSeleccionado;
 
     public SiteList()
@@ -20,17 +23,45 @@ public partial class SiteList : ContentPage
         siteList.ItemsSource = list;
     }
 
+    private void OnSearchBarTextChanged(object sender, TextChangedEventArgs e)
+    {
+        var searchText = e.NewTextValue?.ToLower() ?? string.Empty;
+
+        if (string.IsNullOrEmpty(searchText))
+        {
+            siteList.ItemsSource = list;
+            return;
+        }
+
+        sitiosFiltrados = list.Where(sitio =>
+            sitio.Descripcion?.ToLower().Contains(searchText) ?? false).ToList();
+
+        siteList.ItemsSource = sitiosFiltrados;
+    }
+
     private async void OnPlayVideoClicked(Object sender, EventArgs e)
     {
         var button = (Button)sender;
         var site = (Sitio)button.BindingContext;
 
+        var popup = new PopupVideo(site);
+
+        await this.ShowPopupAsync(popup);
+
     }
-    private async void OnPlayAudioClicked(Object sender, EventArgs e)
+
+    private async void OnPlayAudioClicked(object sender, EventArgs e)
     {
+
         var button = (Button)sender;
         var site = (Sitio)button.BindingContext;
+
+        var popup = new PopupAudio(site);
+        
+        await this.ShowPopupAsync(popup);
+        
     }
+
     private async void OnLocationClicked(Object sender, EventArgs e)
     {
         var button = (Button)sender;

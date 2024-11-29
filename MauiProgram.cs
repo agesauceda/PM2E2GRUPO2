@@ -13,7 +13,7 @@ namespace PM2E2GRUPO2
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkitMediaElement()
-
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -21,7 +21,7 @@ namespace PM2E2GRUPO2
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
             builder.AddAudio();
 #endif
 
