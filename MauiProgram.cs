@@ -14,7 +14,6 @@ namespace PM2E2GRUPO2
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkitMediaElement()
-                .UseMauiMaps()
 
                 .ConfigureFonts(fonts =>
                 {
@@ -23,7 +22,7 @@ namespace PM2E2GRUPO2
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
             builder.AddAudio();
 #endif
 

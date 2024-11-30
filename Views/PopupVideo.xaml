@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="PM2E2GRUPO2.Views.PopupVideo">
+
+    <VerticalStackLayout>
+
+        <StackLayout Padding="20" BackgroundColor="White">
+            <Label Text="Reproduciendo video..." FontSize="Medium" HorizontalOptions="Center"/>
+            <toolkit:MediaElement x:Name="VideoPlayer"
+                    WidthRequest="300"
+                    ShouldShowPlaybackControls="True"
+                    ShouldAutoPlay="False"        
+                    Aspect="AspectFit"
+                    HeightRequest="300" />
+            <Button Text="Cerrar" Clicked="CloseVideoPopup" Margin="10" />
+        </StackLayout>
+    </VerticalStackLayout>
+</toolkit:Popup>
