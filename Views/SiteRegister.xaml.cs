@@ -210,7 +210,12 @@ public partial class SiteRegister : ContentPage
 
             var sitioService = new Service();
             var isSuccess = await sitioService.CreateSitioAsync(sitio);
-
+            await GetLocation();
+            VideoBase = null;
+            AudioBase = null;
+            txtDescripcion.Text = "";
+            audioMediaElement = null;
+            mediaElement = null;
             if (isSuccess)
             {
                 await DisplayAlert("Éxito", "Los datos han sido guardados con éxito.", "OK");
